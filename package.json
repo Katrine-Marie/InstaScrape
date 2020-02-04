@@ -19,5 +19,15 @@
   "bugs": {
     "url": "https://github.com/Katrine-Marie/InstaScrape/issues"
   },
-  "homepage": "https://github.com/Katrine-Marie/InstaScrape#readme"
+  "homepage": "https://github.com/Katrine-Marie/InstaScrape#readme",
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-js-minify": "0.0.3",
+    "gulp-sourcemaps": "^2.6.5"
+  },
+  "dependencies": {}
 }
