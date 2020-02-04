@@ -155,8 +155,8 @@ var InstaScrape = (function(){
                       }
 
                       if (this.is_tag) data.username = '';
-                      html += "<a href='" + url +"' class='instagram-" + type_resource + "' title='" + caption.substring(1, 100) +"' rel='noopener' target='_blank'>";
-                      html += "<img src='" + image + "' alt='" + caption.substring(1, 100) + " />";
+                      html += "<a href='" + url +"' class='instagram-" + type_resource + "' title='" + caption.substring(1, 100) + "' rel='noopener' target='_blank'>";
+                      html += "<img src='" + image + "' alt='" + caption.substring(1, 100) + "' />";
                       html += "</a>";
                     }
 
