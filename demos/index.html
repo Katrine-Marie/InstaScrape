@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>InstaScrape demo</title>
+</head>
+<body>
+  <div class="instascrape"></div>
+
+  <script src="../dist/instascrape.js"></script>
+  <script>
+    new InstaScrape({
+      'username': 'instagram',
+      'container': document.querySelector('.instascrape'),
+      'callback': null,
+      'items': 8,
+    });
+  </script>
+</body>
+</html>
