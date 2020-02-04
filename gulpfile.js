@@ -7,9 +7,7 @@ var minifyjs = require('gulp-js-minify');
 gulp.task('default', () =>
     gulp.src('src/**/*.js')
         .pipe(sourcemaps.init())
-        .pipe(babel({
-            presets: ['@babel/env']
-        }))
+        .pipe(babel())
         .pipe(concat('instascrape.js'))
         .pipe(sourcemaps.write('.'))
         .pipe(minifyjs())
