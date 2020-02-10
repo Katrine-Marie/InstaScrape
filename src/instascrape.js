@@ -12,7 +12,7 @@
  // Added for IE11 compatibility
  if (typeof Object.assign != 'function') {
   Object.defineProperty(Object, "assign", {
-    value: function assign(target, varArgs) {
+    value: function assign(target) {
       'use strict';
       if (target == null) {
         throw new TypeError('Cannot convert undefined or null to object');
@@ -48,10 +48,10 @@ let InstaScrape = (function(){
         'get_data': false,
         'callback': null,
         'items': 8,
-        'image_size': 640
+        'imageSize': 640
     };
 
-    const image_sizes = {
+    const imageSizes = {
         "150": 0,
         "240": 1,
         "320": 2,
@@ -123,7 +123,7 @@ let InstaScrape = (function(){
           let html = '';
 
             // Gallery
-            let image_index = typeof image_sizes[this.options.image_size] !== "undefined" ? image_sizes[this.options.image_size] : image_sizes[640];
+            let image_index = typeof imageSizes[this.options.imageSize] !== "undefined" ? imageSizes[this.options.imageSize] : imageSizes[640];
 
             if(typeof data.is_private !== "undefined" && data.is_private === true){
               console.log('This profile is private');
