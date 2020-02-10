@@ -39,19 +39,19 @@
   });
 }
 
-var InstaScrape = (function(){
-    var defaults = {
+let InstaScrape = (function(){
+    let defaults = {
         'host': "https://www.instagram.com/",
         'username': '',
         'tag': '',
         'container': '',
         'get_data': false,
         'callback': null,
-        'items': 12,
+        'items': 8,
         'image_size': 640
     };
 
-    var image_sizes = {
+    const image_sizes = {
         "150": 0,
         "240": 1,
         "320": 2,
@@ -77,14 +77,14 @@ var InstaScrape = (function(){
         }
 
         this.get = function(callback){
-            var url = this.is_tag ? this.options.host + "explore/tags/" + this.options.tag : this.options.host + this.options.username,
+            let url = this.is_tag ? this.options.host + "explore/tags/" + this.options.tag : this.options.host + this.options.username,
                 xhr = new XMLHttpRequest();
 
-            var _this = this;
+            let _this = this;
             xhr.onload = function(e){
                 if(xhr.readyState === 4){
                     if (xhr.status === 200) {
-                        var data = xhr.responseText.split("window._sharedData = ")[1].split("<\/script>")[0];
+                        let data = xhr.responseText.split("window._sharedData = ")[1].split("<\/script>")[0];
                         data = JSON.parse(data.substr(0, data.length - 1));
                         data = data.entry_data.ProfilePage || data.entry_data.TagPage || null;
                         if(data === null){
@@ -119,16 +119,16 @@ var InstaScrape = (function(){
         }
 
         this.display = function(data){
-          var max = '';
-          var html = '';
+          let max = '';
+          let html = '';
 
             // Gallery
-            var image_index = typeof image_sizes[this.options.image_size] !== "undefined" ? image_sizes[this.options.image_size] : image_sizes[640];
+            let image_index = typeof image_sizes[this.options.image_size] !== "undefined" ? image_sizes[this.options.image_size] : image_sizes[640];
 
             if(typeof data.is_private !== "undefined" && data.is_private === true){
               console.log('This profile is private');
             }else{
-              var imgs = (data.edge_owner_to_timeline_media || data.edge_hashtag_to_media).edges;
+              let imgs = (data.edge_owner_to_timeline_media || data.edge_hashtag_to_media).edges;
                 max = (imgs.length > this.options.items) ? this.options.items : imgs.length;
 
                 html = '';
@@ -136,7 +136,7 @@ var InstaScrape = (function(){
                 html += "<div class='instagram_gallery'>";
 
                 for(var i = 0; i < max; i++){
-                    var url = "https://www.instagram.com/p/" + imgs[i].node.shortcode,
+                    let url = "https://www.instagram.com/p/" + imgs[i].node.shortcode,
                     image, type_resource,
                     caption = this.parse_caption(imgs[i], data);
 
@@ -155,8 +155,8 @@ var InstaScrape = (function(){
                       }
 
                       if (this.is_tag) data.username = '';
-                      html += "<a href='" + url +"' class='instagram-" + type_resource + "' title='" + caption.substring(1, 100) + "' rel='noopener' target='_blank'>";
-                      html += "<img src='" + image + "' alt='" + caption.substring(1, 100) + "' />";
+                      html += "<a href='" + url +"' class='instagram-" + type_resource + "' title='" + caption.substring(0, 100) + "' rel='noopener' target='_blank'>";
+                      html += "<img src='" + image + "' alt='" + caption.substring(0, 100) + "' />";
                       html += "</a>";
                     }
 
