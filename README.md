@@ -1,5 +1,5 @@
 # InstaScrape
-An unopinionated Instagram scraper function, returning data corresponding to an Instagram username. You decide how you want it displayed. The function only returns the data to you.
+An unopinionated Instagram scraper function, returning content corresponding to an Instagram username. It is entirely up to you how you want it displayed.
 
 ## Usage
 
@@ -11,14 +11,14 @@ new InstaScrape({
 });
 ```
 
-Define a username (or a tag), and a container to display the content.
+Define a username (or a tag), and a container in which to display the content.
 
 ### Options and defaults
 
 Mandatory
 * `username`: Username for the account you wish to get data from.
 * `tag`: Alternative to username, you can also define a tag.
-* `container`: An ID of a container, you want the data displayed in.
+* `container`: The selector of a container, you want the data displayed in.
 
 Optional
 * `items`: Number of items to display. Default: 8.
