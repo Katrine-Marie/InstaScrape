@@ -81,10 +81,10 @@ let InstaScrape = (function(){
                 xhr = new XMLHttpRequest();
 
             let _this = this;
-            xhr.onload = function(e){
+            xhr.onload = function(){
                 if(xhr.readyState === 4){
                     if (xhr.status === 200) {
-                        let data = xhr.responseText.split("window._sharedData = ")[1].split("<\/script>")[0];
+                        let data = xhr.responseText.split("window._sharedData = ")[1].split("</script>")[0];
                         data = JSON.parse(data.substr(0, data.length - 1));
                         data = data.entry_data.ProfilePage || data.entry_data.TagPage || null;
                         if(data === null){
@@ -103,7 +103,7 @@ let InstaScrape = (function(){
             xhr.send();
         };
 
-        this.parse_caption = function(igobj, data){
+        this.parseCaption = function(igobj, data){
             if(typeof igobj.node.edge_media_to_caption.edges[0] !== "undefined" && igobj.node.edge_media_to_caption.edges[0].node.text.length != 0){
                 return igobj.node.edge_media_to_caption.edges[0].node.text;
             }
@@ -123,7 +123,7 @@ let InstaScrape = (function(){
           let html = '';
 
             // Gallery
-            let image_index = typeof imageSizes[this.options.imageSize] !== "undefined" ? imageSizes[this.options.imageSize] : imageSizes[640];
+            let imageIndex = typeof imageSizes[this.options.imageSize] !== "undefined" ? imageSizes[this.options.imageSize] : imageSizes[640];
 
             if(typeof data.is_private !== "undefined" && data.is_private === true){
               console.log('This profile is private');
@@ -138,12 +138,12 @@ let InstaScrape = (function(){
                 for(var i = 0; i < max; i++){
                     let url = "https://www.instagram.com/p/" + imgs[i].node.shortcode,
                     image, typeResource,
-                    caption = this.parse_caption(imgs[i], data);
+                    caption = this.parseCaption(imgs[i], data);
 
                     switch(imgs[i].node.__typename){
                       case "GraphSidecar":
                         typeResource = "sidecar"
-                        image = imgs[i].node.thumbnail_resources[image_index].src;
+                        image = imgs[i].node.thumbnail_resources[imageIndex].src;
                         break;
                       case "GraphVideo":
                         typeResource = "video";
@@ -151,10 +151,10 @@ let InstaScrape = (function(){
                       break;
                         default:
                         typeResource = "image";
-                        image = imgs[i].node.thumbnail_resources[image_index].src;
+                        image = imgs[i].node.thumbnail_resources[imageIndex].src;
                       }
 
-                      if (this.isTag) data.username = '';
+                      if (this.isTag) { data.username = ''; }
                       html += "<a href='" + url +"' class='instagram-" + typeResource + "' title='" + caption.substring(0, 100) + "' rel='noopener' target='_blank'>";
                       html += "<img src='" + image + "' alt='" + caption.substring(0, 100) + "' />";
                       html += "</a>";
@@ -165,13 +165,14 @@ let InstaScrape = (function(){
 
             this.options.container.innerHTML = html;
         };
-
+        
         this.run = function(){
             this.get(function(data, instance){
-                if(instance.options.get_data)
+                if(instance.options.get_data) {
                     instance.options.callback(data);
-                else
+                } else {
                     instance.display(data);
+                }
             });
         };
 
