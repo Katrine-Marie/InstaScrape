@@ -45,10 +45,13 @@ let InstaScrape = (function(){
         'username': '',
         'tag': '',
         'container': '',
-        'get_data': false,
+        'getData': false,
         'callback': null,
         'items': 8,
-        'imageSize': 640
+        'imageSize': 640,
+        'imagesOnly': false,
+        'anchorWrapper': true,
+        'showCaption': true
     };
 
     const imageSizes = {
@@ -68,11 +71,11 @@ let InstaScrape = (function(){
         if(this.options.username == "" && this.options.tag == ""){
             console.error("InstaScrape: Error: Missing username.");
             this.valid = false;
-        }else if(!this.options.get_data && this.options.container == ""){
+        }else if(!this.options.getData && this.options.container == ""){
             console.error("InstaScrape: Error, no container found.");
             this.valid = false;
-        }else if(this.options.get_data && typeof this.options.callback != "function"){
-            console.error("InstaScrape: Error, invalid or undefined callback for get_data");
+        }else if(this.options.getData && typeof this.options.callback != "function"){
+            console.error("InstaScrape: Error, invalid or undefined callback for getData");
             this.valid = false;
         }
 
@@ -136,39 +139,70 @@ let InstaScrape = (function(){
                 html += "<div class='instagram_gallery'>";
 
                 for(var i = 0; i < max; i++){
-                    let url = "https://www.instagram.com/p/" + imgs[i].node.shortcode,
-                    image, typeResource,
-                    caption = this.parseCaption(imgs[i], data);
+                  html += '<figure>';
 
-                    switch(imgs[i].node.__typename){
-                      case "GraphSidecar":
-                        typeResource = "sidecar"
-                        image = imgs[i].node.thumbnail_resources[imageIndex].src;
-                        break;
-                      case "GraphVideo":
-                        typeResource = "video";
-                        image = imgs[i].node.thumbnail_src
+                  let url = "https://www.instagram.com/p/" + imgs[i].node.shortcode,
+                  image, typeResource,
+                  caption = this.parseCaption(imgs[i], data);
+
+                  switch(imgs[i].node.__typename){
+                    case "GraphSidecar":
+                      typeResource = "sidecar"
+                      image = imgs[i].node.thumbnail_resources[imageIndex].src;
                       break;
-                        default:
-                        typeResource = "image";
-                        image = imgs[i].node.thumbnail_resources[imageIndex].src;
-                      }
-
-                      if (this.isTag) { data.username = ''; }
-                      html += "<a href='" + url +"' class='instagram-" + typeResource + "' title='" + caption.substring(0, 100) + "' rel='noopener' target='_blank'>";
-                      html += "<img src='" + image + "' alt='" + caption.substring(0, 100) + "' />";
-                      html += "</a>";
+                    case "GraphVideo":
+                      typeResource = "video";
+                      image = imgs[i].node.thumbnail_src
+                      break;
+                    default:
+                      typeResource = "image";
+                      image = imgs[i].node.thumbnail_resources[imageIndex].src;
                     }
 
-                    html += "</div>";
+                    if (this.isTag) { data.username = ''; }
+
+                    if(this.options.imagesOnly){
+
+                      if(typeResource == "image"){
+                        if(this.options.anchorWrapper){
+                          html += "<a href='" + url +"' class='instagram-" + typeResource + "' title='" + caption.substring(0, 100) + "' rel='noopener' target='_blank'>";
+                        }
+                        html += "<img src='" + image + "' alt='" + caption.substring(0, 100) + "' />";
+                        if(this.options.showCaption){
+                          html += '<figcaption>' + caption + '</figcaption>';
+                        }
+                        if(this.options.anchorWrapper){
+                          html += "</a>";
+                        }
+                      }
+
+                    }else {
+
+                      if(this.options.anchorWrapper){
+                        html += "<a href='" + url +"' class='instagram-" + typeResource + "' title='" + caption.substring(0, 100) + "' rel='noopener' target='_blank'>";
+                      }
+                      html += "<img src='" + image + "' alt='" + caption.substring(0, 100) + "' />";
+                      if(this.options.showCaption){
+                        html += '<figcaption>' + caption + '</figcaption>';
+                      }
+                      if(this.options.anchorWrapper){
+                        html += "</a>";
+                      }
+
+                    }
+
+                    html += '</figure>';
+                  }
+
+                  html += "</div>";
                 }
 
             this.options.container.innerHTML = html;
         };
-        
+
         this.run = function(){
             this.get(function(data, instance){
-                if(instance.options.get_data) {
+                if(instance.options.getData) {
                     instance.options.callback(data);
                 } else {
                     instance.display(data);
