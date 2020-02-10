@@ -62,7 +62,7 @@ let InstaScrape = (function(){
     return function(opts){
         this.options = Object.assign({}, defaults);
         this.options = Object.assign(this.options, opts);
-        this.is_tag = this.options.username == "";
+        this.isTag = this.options.username == "";
 
         this.valid = true;
         if(this.options.username == "" && this.options.tag == ""){
@@ -77,7 +77,7 @@ let InstaScrape = (function(){
         }
 
         this.get = function(callback){
-            let url = this.is_tag ? this.options.host + "explore/tags/" + this.options.tag : this.options.host + this.options.username,
+            let url = this.isTag ? this.options.host + "explore/tags/" + this.options.tag : this.options.host + this.options.username,
                 xhr = new XMLHttpRequest();
 
             let _this = this;
@@ -115,7 +115,7 @@ let InstaScrape = (function(){
             if(typeof igobj.node.accessibility_caption !== "undefined" && igobj.node.accessibility_caption.length != 0){
                 return igobj.node.accessibility_caption;
             }
-            return (this.is_tag ? data.name : data.username) + " image ";
+            return (this.isTag ? data.name : data.username) + " image ";
         }
 
         this.display = function(data){
@@ -137,25 +137,25 @@ let InstaScrape = (function(){
 
                 for(var i = 0; i < max; i++){
                     let url = "https://www.instagram.com/p/" + imgs[i].node.shortcode,
-                    image, type_resource,
+                    image, typeResource,
                     caption = this.parse_caption(imgs[i], data);
 
                     switch(imgs[i].node.__typename){
                       case "GraphSidecar":
-                        type_resource = "sidecar"
+                        typeResource = "sidecar"
                         image = imgs[i].node.thumbnail_resources[image_index].src;
                         break;
                       case "GraphVideo":
-                        type_resource = "video";
+                        typeResource = "video";
                         image = imgs[i].node.thumbnail_src
                       break;
                         default:
-                        type_resource = "image";
+                        typeResource = "image";
                         image = imgs[i].node.thumbnail_resources[image_index].src;
                       }
 
-                      if (this.is_tag) data.username = '';
-                      html += "<a href='" + url +"' class='instagram-" + type_resource + "' title='" + caption.substring(0, 100) + "' rel='noopener' target='_blank'>";
+                      if (this.isTag) data.username = '';
+                      html += "<a href='" + url +"' class='instagram-" + typeResource + "' title='" + caption.substring(0, 100) + "' rel='noopener' target='_blank'>";
                       html += "<img src='" + image + "' alt='" + caption.substring(0, 100) + "' />";
                       html += "</a>";
                     }
