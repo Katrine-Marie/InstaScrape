@@ -3,9 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <title>InstaScrape demo</title>
+
+  <style>
+    body {
+      font-family:'Arial';
+    }
+    img {max-width:100%;}
+
+    h1, h2 {
+      margin:20px;
+    }
+
+    .wrapper {
+      margin:30px auto;
+      max-width:1080px;
+    }
+    .instagram_gallery {
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+    }
+    figure {
+      width:200px;
+      margin:20px;
+    }
+
+    pre {
+      margin:20px;
+      padding:20px;
+      border-radius:6px;
+      border:1px solid #eee;
+      background:whitesmoke;
+    }
+  </style>
 </head>
 <body>
-  <div class="instascrape"></div>
+  <div class="wrapper">
+    <h1>InstaScrape demo</h1>
+    <div class="instascrape"></div>
+
+    <h2>Example Usage</h2>
+    <code>
+      <pre>
+new InstaScrape({
+  'username': 'instagram',
+  'container': document.querySelector('.instascrape'),
+  'callback': null,
+  'items': 8,
+  'anchorWrapper': true,
+  'showCaption': false,
+  'imagesOnly': false
+});</pre>
+    </code>
+  </div>
 
   <script src="../dist/instascrape.js"></script>
   <script>
